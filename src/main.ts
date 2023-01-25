@@ -10,8 +10,6 @@ import "./assets/main.css"
 
 const app = createApp(App)
 
-console.log(import.meta.env)
-
 app.use(createPinia())
 app.use(router)
 app.use(
