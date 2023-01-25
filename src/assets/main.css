@@ -1,0 +1,52 @@
+@import './base.css';
+
+#app {
+  margin: 0 auto;
+  font-weight: normal;
+  background-color: #141414;
+}
+
+body{
+  background-color: #141414;
+}
+
+.header-text{
+  color: #fff;
+}
+
+.main-container {
+  display: flex;
+  max-width: 1200px;
+  align-self: center;
+  flex-direction: column;
+}
+
+.zoom {
+  transition: transform .2s;
+}
+
+.zoom:hover {
+  -ms-transform: scale(1.2); /* IE 9 */
+  -webkit-transform: scale(1.2); /* Safari 3-8 */
+  transform: scale(1.2); 
+  z-index: 999;
+}
+
+a,
+.green {
+  text-decoration: none;
+  transition: 0.4s;
+}
+
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+  }
+
+  #app {
+    display: flex;
+    flex-direction: column;
+  }
+}
