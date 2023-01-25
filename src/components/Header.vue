@@ -2,6 +2,7 @@
 import LoginButton from "./buttons/LoginButton.vue"
 import { useAuth0 } from "@auth0/auth0-vue"
 import LogoutButton from "./buttons/LogoutButton.vue"
+import logo from "../assets/netflix-logo.png"
 
 const { isAuthenticated } = useAuth0()
 </script>
@@ -11,7 +12,7 @@ const { isAuthenticated } = useAuth0()
         <div class="main-menu">
             <div class="left">
                 <RouterLink to="/">
-                    <img class="logo" src="src/assets/netflix-logo.png" alt="" />
+                    <img class="logo" :src="logo" alt="" />
                 </RouterLink>
                 <RouterLink to="/discovery"><span class="header-text">Discovery</span></RouterLink>
             </div>
