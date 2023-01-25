@@ -10,9 +10,8 @@ const router = createRouter({
     routes: [
         {
             path: "/",
-            redirect: (to) => {
-                return { path: "/discovery" }
-            },
+            name: "home",
+            component: HomeView,
         },
         {
             path: "/callback",
