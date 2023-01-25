@@ -31,6 +31,7 @@ async function getRepoData(topic: string) {
     return finalRes.items
 }
 
+
 const initAllRepo = async () => {
     repoVue.value = await getRepoData("Vue")
     repoTs.value = await getRepoData("Typescript")
