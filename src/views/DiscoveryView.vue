@@ -24,7 +24,7 @@ async function getRepoData(topic: string) {
     const queryString = "q=" + encodeURIComponent(`language:${topic}`)
     const res = await fetch(`https://api.github.com/search/repositories?${queryString}`, {
         headers: {
-            authorization: `token ${"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"}`,
+            authorization: `token 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`,
         },
     })
     const finalRes = await res.json()
