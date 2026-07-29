@@ -23,10 +23,12 @@ As APIs "gratuitas" de letras ou (a) não entregam a letra, (b) entregam 30% del
 servem para *metadados* e *descoberta*; o acervo de cifras precisa ser seu (curado ou
 colaborativo), em ChordPro. Detalho na seção 6.
 
-**Recomendação:** comece com acervo próprio em ChordPro + ChordSheetJS para o NNS,
-Hinos de domínio público para popular o catálogo desde o dia 1, e LRCLIB apenas para
-letra sincronizada quando fizer sentido. Trate CCLI/PraiseCharts como meta de médio prazo
-(parceria), não como dependência de lançamento.
+**Recomendação (revisada — ver seção 9):** escopo inicial **sem letra**, focado em
+instrumentistas, servindo **apenas chart em Nashville**. Isso remove a maior parte do
+risco autoral e, por consequência, remove a necessidade de scraping: o dado fica tão
+pequeno que transcrever é mais barato que raspar. Acervo próprio, schema por compasso,
+ChordSheetJS **só para a matemática de acordes**. CCLI/PraiseCharts viram meta de
+médio prazo (parceria), não dependência de lançamento.
 
 ---
 
@@ -267,7 +269,28 @@ real — charts de Nashville frequentemente numeram a partir da **tônica menor*
 **c) Qualidade `sus` é normalizada.** `Asus4` em D → `5sus` (perde o "4").
 Se precisar distinguir sus2/sus4, preserve o sufixo original.
 
-### 5.3 Correção de referência
+### 5.3 ⚠️ ChordSheetJS é centrado em LETRA — não use como modelo de dados
+
+Descoberta crítica para um app sem letra. Testei representar compassos:
+
+```
+Entrada:  | [D] | [G] | [A] [Bm] | [D] |
+Classes de item encontradas:  Tag, ChordLyricsPair     ← não existe Bar/Measure
+```
+
+O modelo do ChordSheetJS é **`ChordLyricsPair`**: acorde *ancorado a um fragmento de
+letra*. As barras de compasso sobrevivem ao roundtrip apenas porque ficam guardadas
+**como texto de letra** — não como estrutura. O `TextFormatter` as imprime na linha de
+letra, desalinhadas dos acordes.
+
+Consequência: **ao remover a letra, você remove a âncora da biblioteca.** Duração e
+compasso — a única pista de tempo que resta num chart sem letra — não são representáveis.
+
+**Portanto:** use ChordSheetJS para a **matemática de acordes** (`Chord.parse`,
+`toNumeric`, `toChordSymbol` — validados e excelentes) e **não** para o modelo de dados.
+O schema por compasso está na seção 9.2.
+
+### 5.4 Correção de referência
 
 ```js
 import { Chord } from 'chordsheetjs';
@@ -326,14 +349,14 @@ exigir republicar o app; (4) só com acervo próprio você garante que `key` exi
 nativamente, carrega metadados (`key`, `capo`, `time`), e é interoperável com todo o
 ecossistema de louvor (OnSong, OpenLP, OpenSong, Holyrics). Não invente formato próprio.
 
-### Roadmap sugerido
+### Roadmap sugerido (revisado — ver seção 9)
 
 | Fase | Conteúdo | Objetivo |
 |---|---|---|
-| **1 — MVP** | Hinos de DP (Hymnary + hinários clássicos) em ChordPro | Provar o NNS com risco jurídico zero |
+| **1 — MVP** | **Chart NNS sem letra**, transcrito internamente. App para instrumentistas | Risco autoral mínimo, acervo próprio |
 | **2 — Acervo** | Contribuição de usuários + curadoria | Crescer sem depender de terceiros |
-| **3 — Letras** | LRCLIB com cache; Vagalume p/ PT-BR | Letra sincronizada |
-| **4 — Parceria** | PraiseCharts → depois CCLI | Repertório moderno, legalizado |
+| **3 — Import** | Usuário importa o que já possui (ChordPro/SongSelect/PraiseCharts) | Ser o renderizador, não a biblioteca |
+| **4 — Parceria** | PraiseCharts → depois CCLI | Repertório moderno licenciado; letra só aqui |
 
 ---
 
@@ -368,6 +391,112 @@ de letras sem autorização documentada. Não é risco teórico.
 6. **Consultar advogado de direito autoral musical** antes de monetizar.
 
 ---
+
+## 9. Direção definida: app para instrumentistas, Nashville sem letra
+
+Decisão de escopo tomada após a análise das seções 3 e 8: **sem letra, só chart em
+Nashville, busca por música, transposição no app.** Esta seção detalha as consequências.
+
+### 9.1 Por que isso resolve o problema de acervo (e não só o jurídico)
+
+**Retirar a letra retira a maior parte do passivo.** Progressões de acordes são tratadas
+como "estoque comum de matéria-prima musical" e largamente não protegidas; letra é
+integralmente protegida. Um chart em números, sem letra e sem tom fixo, é essencialmente
+**análise harmônica funcional** — a posição mais defensável disponível no produto.
+
+**E o efeito colateral é o mais importante: o dado fica minúsculo.** Uma música inteira
+cabe em ~32–40 compassos, algumas dezenas de tokens:
+
+```
+Intro   | 1 | 4 | 5 | 5 |
+Verso   | 1 | 4 | 5 6m | 1 | 4 | 1/3 | 5 | 5 |
+Refrão  | 6m | 4 | 1 | 5 | 6m | 4 | 1 5 | <1> |
+```
+
+Um músico competente tira isso de ouvido em poucos minutos. **200 músicas é trabalho de
+semanas de uma pessoa, não de um scraper.** A pergunta "vale raspar?" simplesmente
+desaparece: transcrever é mais barato, gera dado limpo, com `key` correta (o campo que
+scraping mais erra — seção 2), e o acervo passa a ser **ativo próprio**, mostrável a
+investidor e compatível com parceria futura.
+
+⚠️ Ressalva honesta: se os números forem *derivados* de scraping, a violação de termos de
+uso na **aquisição** continua existindo — some apenas o artefato infringente no produto.
+Como transcrever é barato aqui, o incentivo para raspar deixa de exister. E mantenha o
+dado **funcional/harmônico**: não derive para transcrição nota-a-nota de arranjo
+(voicings específicos, riffs, condução de vozes), porque *voice leading* distintivo
+pode ser protegido.
+
+### 9.2 O problema de design que a decisão cria: sem letra, perde-se o tempo
+
+**A letra é o que diz ao músico QUANDO o acorde troca.** Sem ela, `1 4 5 6m` é ambíguo —
+o `1` dura quantos compassos? Se o app servir uma lista plana de acordes, **o
+instrumentista não consegue usar**. É o problema central do produto.
+
+O NNS real resolve isso com convenções estabelecidas (verificadas):
+
+| Convenção | Notação | Significado |
+|---|---|---|
+| **Regra central** | `1 número = 1 compasso` | Em 4/4, quatro tempos por número |
+| Split bar | sublinhado sob os acordes | 2 ou 4 acordes dividindo um compasso |
+| Divisão desigual | hash marks | Acordes com durações diferentes no compasso |
+| Diamante | `<1>` | Segura o acorde (nota longa) |
+| Menor | `4-` ou `4m` | Sem marcação = maior |
+| Dim / Aug | `°` / `+` | |
+| Inversão | `1/3` | Baixo alternativo — **o baixista vive disso** |
+| Agrupamento | 4 compassos por linha, alinhados | Frase musical |
+
+**Portanto o schema é baseado em COMPASSO, não em lista de acordes.** Retrofitar isso
+depois é caro — modele no dia 1.
+
+```js
+{
+  title: 'Exemplo', originalKey: 'D', time: '4/4',
+  sections: [
+    { label: 'Intro',  repeat: 2, bars: [['1'], ['4'], ['5'], ['5']] },
+    { label: 'Refrão', repeat: 2, bars: [['6m'], ['4'], ['1', '5'], [{ d: '1', hold: true }]] },
+  ],
+}
+```
+
+Um `bar` é uma lista de acordes: um elemento = compasso inteiro; dois ou mais = split bar.
+Protótipo executável validando renderização + transposição:
+`docs/spikes/nashville-chart-proto.mjs`.
+
+### 9.3 Ganhos de produto (a decisão é foco, não só cautela)
+
+- **Segmento desatendido.** Praticamente todo app de louvor é *lyrics-first* — feito para
+  cantor e projeção. A banda (teclado, baixo, guitarra, bateria) recebe um PDF impresso.
+- **Offline-first fica trivial.** Com dado desse tamanho, o acervo inteiro cabe em algumas
+  centenas de KB. Wi-fi de igreja é notoriamente ruim: isso é vantagem real, não detalhe.
+- **Transposição instantânea e local**, sem servidor (validado na seção 5).
+- **Sem backend crítico no MVP.** Sem letra, caem LRCLIB, cache e rate limit. O app pode
+  nascer com acervo embarcado — muito menos infra para lançar.
+
+### 9.4 Features que interessam ao instrumentista (e são livres de risco)
+
+Nada aqui toca material protegido, e é o que a banda realmente pede:
+
+- Transposição + **capo** por instrumentista (o violão quer o `4` em forma de E).
+- **Mapa de seções com repetições** e contagem de compassos — o baterista usa mais isso
+  que os acordes.
+- **BPM e fórmula de compasso.**
+- **Setlist** ordenada do culto, com tom por música (o tom que *aquela* cantora usa).
+- Inversões explícitas (`1/3`, `1/5`) — informação de baixo.
+- Modo de ensaio vs. modo palco (fonte grande, rolagem travada).
+
+### 9.5 Riscos que mudam com a decisão
+
+| Risco | Antes | Agora |
+|---|---|---|
+| Infração de letra | **Alto** | **Eliminado** (não há letra) |
+| Takedown / App Store 5.2.1 | Alto | **Baixo** |
+| Acervo vazio no lançamento | Alto | **Médio** — transcrição interna é factível |
+| Chart ambíguo, inútil no palco | não avaliado | **Alto** — mitigar com schema 9.2 |
+| Convenção de tom menor (seção 5.2b) | Médio | **Médio** — segue valendo, testar |
+
+O risco dominante deixa de ser jurídico e passa a ser de **qualidade de dado**: um chart
+sem letra e sem estrutura de compasso confiável é pior que chart nenhum, porque falha
+no palco, ao vivo, sem chance de correção.
 
 ## Fontes
 
