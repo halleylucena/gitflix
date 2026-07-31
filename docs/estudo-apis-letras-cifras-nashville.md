@@ -498,6 +498,44 @@ O risco dominante deixa de ser jurídico e passa a ser de **qualidade de dado**:
 sem letra e sem estrutura de compasso confiável é pior que chart nenhum, porque falha
 no palco, ao vivo, sem chance de correção.
 
+## 10. Panorama competitivo: todos são EDITOR, nenhum é CATÁLOGO
+
+Levantamento dos apps de NNS existentes:
+
+| Produto | O que é | Modelo | Preço |
+|---|---|---|---|
+| **JotChord** | Web app de autoria NNS, sintaxe "ChordText" otimizada para digitação rápida, PDF pronto para impressão, roda em qualquer navegador | **Editor** | **Grátis** |
+| **1Chart** | App iPad para escrever charts NNS rápido | **Editor** | Pago |
+| **Nashville Numbers** (iOS) | Criar charts "com a facilidade de papel e caneta" | **Editor** | Pago |
+| **Chordsheet.com** | Chord sheet maker com suporte a NNS | **Editor** | Freemium |
+| **PraiseCharts** | Vende charts (inclui NNS) de músicas específicas | **Catálogo licenciado** | Pago por música |
+| **MultiTracks ChartBuilder** | Exibe `Chords / Numbers / Numerals / Do-Re-Mi` | **Catálogo licenciado** | Assinatura |
+
+### A leitura estratégica
+
+**Padrão claro: quem é grátis é editor; quem tem catálogo, licenciou e cobra.**
+
+Nenhum produto independente oferece **busca por música que devolve o chart em Nashville**.
+Isso não é acaso — é exatamente a lacuna que a seção 9 identificou: a parte cara
+(transcrição) e a parte sensível (repertório de terceiros). Os concorrentes ou evitaram,
+ou pagaram para ter (PraiseCharts, MultiTracks).
+
+Duas consequências para o projeto:
+
+1. **Não dá para ganhar no editor.** O JotChord é gratuito, maduro e roda em qualquer
+   navegador sem instalar. Construir "mais um editor de NNS" é entrar num mercado
+   comoditizado contra um incumbente de preço zero.
+
+2. **O catálogo é o único valor defensável — e é justamente o que os outros não fizeram.**
+   A busca que devolve o chart pronto é o diferencial real. Mas é preciso entrar nela com
+   os olhos abertos: você estaria assumindo o custo e o risco que o mercado inteiro
+   declinou. A seção 9.1 explica por que isso é viável **se** o dado for transcrito
+   internamente, sem letra e mantido no nível funcional/harmônico.
+
+O posicionamento que decorre: **não é "um editor de Nashville"; é "o acervo de Nashville
+para a banda de louvor, com transposição e offline"**. Editor, se existir, é feature de
+apoio para a equipe preencher lacunas — não o produto.
+
 ## Fontes
 
 Letras: [LRCLIB](https://lrclib.net) · [LRCLIB no HN](https://news.ycombinator.com/item?id=39480390) · [Musixmatch free tier](https://freeapihub.com/apis/musixmatch) · [Vagalume API](https://api.vagalume.com.br/docs/letras/) · [Vagalume exemplos](https://github.com/vagalume/api-exemplos/blob/master/README.md) · [Music Assistant — lyrics](https://www.music-assistant.io/metadata/lyrics/)
@@ -507,6 +545,8 @@ Acordes: [Songsterr API](https://publicapis.io/songsterr-music-api) · [Uberchor
 Worship: [CCLI SongSelect](https://songselect.ccli.com/) · [CCLI API Partners](https://songselect.ccli.com/about/apipartners) · [Church Copyright License](https://ccli.com/us/en/church-copyright-license) · [PraiseCharts Developers](https://developer.praisecharts.com/) · [PraiseCharts API docs](https://api.praisecharts.com/docs) · [MultiTracks ChartBuilder](https://www.multitracks.com/products/chartbuilder/)
 
 Domínio público: [Hymnary.org](https://hymnary.org/) · [Hymnary FAQ](https://hymnary.org/faq) · [Open Hymnal](http://openhymnal.org/OpenHymnal2014.06.pdf) · [PD Hymns](https://www.pdhymns.com/) · [Worship Leader App DB](https://worshipleaderapp.com/en/download-song-database-opensong-openlp-and-quelea)
+
+Concorrentes NNS: [JotChord](https://www.jotchord.com/) · [JotChord — worship leaders](https://www.jotchord.com/for-worship-leaders) · [1Chart](https://www.1chartapp.com/about-numbers/) · [Nashville Numbers (App Store)](https://apps.apple.com/us/app/nashville-numbers/id1475438302) · [Chordsheet.com — NNS](https://www.chordsheet.com/manual/nashville-number-system) · [PraiseCharts — NNS para bandas](https://www.praisecharts.com/blog/the-nashville-number-system-chart-for-bands/)
 
 Nashville / libs: [ChordSheetJS](https://github.com/martijnversluis/ChordSheetJS) · [ChordJS](https://github.com/martijnversluis/ChordJS) · [@praisecharts/chordchartjs](https://www.npmjs.com/package/@praisecharts/chordchartjs) · [nashville (npm)](https://github.com/sgoudie/nashville) · [NNS — Wikipedia](https://en.wikipedia.org/wiki/Nashville_Number_System) · [ChordPro](https://en.wikipedia.org/wiki/ChordPro)
 
